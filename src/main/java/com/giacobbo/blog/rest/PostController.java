@@ -42,9 +42,9 @@ public class PostController {
 		return postService.getPost(id);
 	}
 
-	@RequestMapping(value = "/{id}/{post}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{post}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public String addPost(@PathVariable String id, @RequestBody String post) {
+	public String addPost(@RequestBody String post) {
 		JSONObject jsonObj = new JSONObject(post.toString());
 		return postService.postAdd(PostFactory.create(jsonObj.get("title").toString(),
 				jsonObj.get("content").toString(), LocalDateTime.now()));

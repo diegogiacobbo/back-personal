@@ -31,6 +31,9 @@ public class Post {
 	@Column(name = "creation")
 	private LocalDateTime creationDate;
 	
+	@Column(name = "is_public")
+	private Boolean isPublic;
+	
 	public String getTitle() {
 		return title;
 	}

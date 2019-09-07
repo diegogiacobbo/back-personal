@@ -79,7 +79,8 @@ public class CommentControllerTest extends AbstractControllerTest {
 				.sessionAttr(TOKEN_ATTR_NAME, csrfToken)
                 .param(csrfToken.getParameterName(), csrfToken.getToken())
 				.contentType(APPLICATION_JSON_UTF8).content(commentBody)
-				.accept(APPLICATION_JSON_UTF8)).andExpect(status().isCreated());
+				.accept(APPLICATION_JSON_UTF8)).andExpect(status()
+						.isCreated());
 	}
 
 	private CommentDto createComment(String content, String author) {
