@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +23,7 @@ import com.giacobbo.blog.service.PostServiceImpl;
 
 @Controller
 @RestController
-@EnableAutoConfiguration
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/posts")
 public class PostController {
 
@@ -34,6 +34,12 @@ public class PostController {
 	@ResponseStatus(HttpStatus.OK)
 	List<Post> all() {
 		return postService.findAll();
+	}
+	
+	@GetMapping("/ispublic/")
+	@ResponseStatus(HttpStatus.OK)
+	List<PostDto> ispublic() {
+		return postService.findPublicPosts();
 	}
 
 	@GetMapping("/{id}")

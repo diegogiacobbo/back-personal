@@ -64,7 +64,18 @@ public class PostRepositoryImpl implements PostRepository {
 		TypedQuery<Post> allQuery = em.createQuery(all);
 		return allQuery.getResultList();
 	}
+	
+	public Iterable<Post> findPublicPosts() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Post> cq = cb.createQuery(Post.class);
+		Root<Post> rootEntry = cq.from(Post.class);
+		cq.where(cb.equal(rootEntry.get("isPublic"), Boolean.TRUE));
+		
+		CriteriaQuery<Post> publicPosts = cq.select(rootEntry);
 
+		TypedQuery<Post> publicPostsQuery = em.createQuery(publicPosts );
+		return publicPostsQuery.getResultList();
+	}
 	@Override
 	public Iterable<Post> findAllById(Iterable<String> ids) {
 		// TODO Auto-generated method stub

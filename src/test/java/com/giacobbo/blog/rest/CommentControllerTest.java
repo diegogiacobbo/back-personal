@@ -14,19 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.test.context.ContextConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.giacobbo.blog.dto.CommentDto;
 
-@WebMvcTest(CommentController.class)
+@ContextConfiguration(classes = CommentController.class)
 public class CommentControllerTest extends AbstractControllerTest {
 
 	private static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),

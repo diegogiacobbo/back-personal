@@ -1,5 +1,6 @@
 package com.giacobbo.blog.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,13 +19,11 @@ public class PostServiceImpl {
 
 	public PostDto getPost(String id) {
 
-		Optional<Post> post3 = postRepository.findById(id);
+		Optional<Post> postOptional = postRepository.findById(id);
 
-		return postRepository.findById(id)
-				.map(post -> new PostDto(post3.get().getTitle(), 
-						post3.get().getContent(), 
-						post3.get().getCreationDate())).
-				orElse(null);
+		return postRepository.findById(id).map(post -> new PostDto(postOptional.get().getId(),
+				postOptional.get().getTitle(), postOptional.get().getContent(), postOptional.get().getCreationDate()))
+				.orElse(null);
 	}
 
 	public String postAdd(Post post) {
@@ -32,8 +31,18 @@ public class PostServiceImpl {
 	}
 
 	public List<Post> findAll() {
-		List<Post> cities = (List<Post>) postRepository.findAll();
-		return cities;
+		List<Post> posts = (List<Post>) postRepository.findAll();
+		return posts;
 	}
 
+	public List<PostDto> findPublicPosts() {
+
+		List<PostDto> listPostDto = new ArrayList<PostDto>();
+
+		postRepository.findPublicPosts().forEach(post -> {
+			listPostDto.add(new PostDto(post.getId(), post.getTitle(), post.getContent(), post.getCreationDate()));
+		});
+
+		return listPostDto;
+	}
 }
