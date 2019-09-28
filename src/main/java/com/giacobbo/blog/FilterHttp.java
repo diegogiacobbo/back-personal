@@ -41,7 +41,7 @@ public class FilterHttp implements Filter {
 		 * cabecalho abaixo que e enviado na resposta. FIXME: corrigir cabecalhos para
 		 * que o CORS de origem aceite, como o proxy ativado atualmente faz.
 		 */
-		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		response.setHeader("Access-Control-Allow-Origin", "https://flamboyant-boyd-b6719d.netlify.com");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 		response.setHeader("Access-Control-Max-Age", "3600");

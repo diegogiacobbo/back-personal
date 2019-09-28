@@ -11,10 +11,10 @@ public class PostFactory implements Serializable {
 	  private PostFactory() {
 	  }
 	  
-	  public static Post create(String content, String title, LocalDateTime date) {
+	  public static Post create(String title, String content, LocalDateTime date) {
 		  return new PostBuilder()
-                  .addContent(content)
                   .addTitle(title)
+                  .addContent(content)
                   .addData(date)
                   .instance();
 	  }
