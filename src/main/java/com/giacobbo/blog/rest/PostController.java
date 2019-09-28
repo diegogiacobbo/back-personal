@@ -23,8 +23,8 @@ import com.giacobbo.blog.service.PostServiceImpl;
 
 @Controller
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/posts")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostController {
 
 	@Autowired

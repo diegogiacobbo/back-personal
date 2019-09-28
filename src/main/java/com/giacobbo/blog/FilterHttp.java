@@ -1,7 +1,5 @@
 package com.giacobbo.blog;
 
-
-
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -19,32 +17,46 @@ import org.springframework.stereotype.Component;
 @Component
 public class FilterHttp implements Filter {
 
-private final Logger log = LoggerFactory.getLogger(FilterHttp.class);
+	private final Logger log = LoggerFactory.getLogger(FilterHttp.class);
 
-public void SimpleCORSFilter() {
-    log.info("SimpleCORSFilter init");
-}
+	public void SimpleCORSFilter() {
+		log.info("giacobbo --> # habilitando.CORS.manual (init)");
+	}
 
-@Override
-public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+	@Override
+	@Deprecated
+	/**
+	 * @author diego
+	 * @deprectated Utilizamos um proxy midleware, que corrige cabecalhos CORS e
+	 *              manipula todas as informacoes de cabecalho de origem e destino.
+	 */
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+			throws IOException, ServletException {
 
-    HttpServletResponse response = (HttpServletResponse) res;
+		HttpServletResponse response = (HttpServletResponse) res;
 
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    response.setHeader("Access-Control-Allow-Credentials", "true");
-    response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-    response.setHeader("Access-Control-Max-Age", "3600");
-    response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+		/**
+		 * TODO: devemos futuramente alterar corretamente as informacoes e enviar apenas
+		 * as informacoes que o host origem precisa, dessa forma pouco importa o
+		 * cabecalho abaixo que e enviado na resposta. FIXME: corrigir cabecalhos para
+		 * que o CORS de origem aceite, como o proxy ativado atualmente faz.
+		 */
+		response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Max-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers",
+				"origin, x-request-with, Content-Type, Accept, X-Requested-With, remember-me");
 
-    chain.doFilter(req, res);
-}
+		chain.doFilter(req, res);
+	}
 
-@Override
-public void init(FilterConfig filterConfig) {
-}
+	@Override
+	public void init(FilterConfig filterConfig) {
+	}
 
-@Override
-public void destroy() {
-}
+	@Override
+	public void destroy() {
+	}
 
 }
