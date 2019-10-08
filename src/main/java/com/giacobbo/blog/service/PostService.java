@@ -11,8 +11,10 @@ public interface PostService {
 
 	public String postAdd(Post post);
 
-	public List<Post> findAll();
+	public List<PostDto> findAll();
 	
-	public List<Post> findPublicPosts();
+	public List<PostDto> findPublicPosts();
+	
+	public PostDto findLastPost();
 
 }

@@ -39,7 +39,8 @@ public class PostRepositoryImpl implements PostRepository {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@Override
 	public Optional<Post> findById(String id) {
 		Post post = em.find(Post.class, Long.valueOf(id));
 		if (post == null) {
@@ -47,7 +48,22 @@ public class PostRepositoryImpl implements PostRepository {
 		}
 		return Optional.of(post);
 	}
+	
 
+	@Override
+	public Post findTopByReverseOrderByCreationDate(){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Post> cq = cb.createQuery(Post.class);
+		Root<Post> rootEntry = cq.from(Post.class);
+		cq.where(cb.equal(rootEntry.get("isPublic"), Boolean.TRUE));
+		cq.orderBy(cb.desc(rootEntry.get("creationDate")));
+		
+		CriteriaQuery<Post> publicPosts = cq.select(rootEntry);
+
+		TypedQuery<Post> publicPostsQuery = em.createQuery(publicPosts );
+		return publicPostsQuery.getResultList().get(0);
+	}
+	
 	@Override
 	public boolean existsById(String id) {
 		// TODO Auto-generated method stub
@@ -65,11 +81,13 @@ public class PostRepositoryImpl implements PostRepository {
 		return allQuery.getResultList();
 	}
 	
+	@Override
 	public Iterable<Post> findPublicPosts() {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Post> cq = cb.createQuery(Post.class);
 		Root<Post> rootEntry = cq.from(Post.class);
 		cq.where(cb.equal(rootEntry.get("isPublic"), Boolean.TRUE));
+		cq.orderBy(cb.asc(rootEntry.get("creationDate")));
 		
 		CriteriaQuery<Post> publicPosts = cq.select(rootEntry);
 
@@ -91,13 +109,11 @@ public class PostRepositoryImpl implements PostRepository {
 	@Override
 	public void deleteById(String id) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void delete(Post entity) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -109,7 +125,6 @@ public class PostRepositoryImpl implements PostRepository {
 	@Override
 	public void deleteAll() {
 		// TODO Auto-generated method stub
-
 	}
 
 }

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.giacobbo.blog.dto.PostDto;
 import com.giacobbo.blog.factory.PostFactory;
-import com.giacobbo.blog.model.Post;
 import com.giacobbo.blog.service.PostServiceImpl;
 
 @Controller
@@ -32,7 +31,7 @@ public class PostController {
 
 	@GetMapping("/")
 	@ResponseStatus(HttpStatus.OK)
-	List<Post> all() {
+	List<PostDto> all() {
 		return postService.findAll();
 	}
 	
@@ -42,6 +41,12 @@ public class PostController {
 		return postService.findPublicPosts();
 	}
 
+	@GetMapping("/last/")
+	@ResponseStatus(HttpStatus.OK)
+	PostDto last() {
+		return postService.findLastPost();
+	}
+	
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public PostDto getPost(@PathVariable String id) {

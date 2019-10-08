@@ -12,11 +12,12 @@ import com.giacobbo.blog.model.Post;
 import com.giacobbo.blog.repository.PostRepositoryImpl;
 
 @Service
-public class PostServiceImpl {
+public class PostServiceImpl implements PostService {
 
 	@Autowired
 	private PostRepositoryImpl postRepository;
-
+	
+	@Override
 	public PostDto getPost(String id) {
 
 		Optional<Post> postOptional = postRepository.findById(id);
@@ -26,15 +27,23 @@ public class PostServiceImpl {
 				.orElse(null);
 	}
 
+	@Override
 	public String postAdd(Post post) {
 		return postRepository.save(post).getId().toString();
 	}
 
-	public List<Post> findAll() {
-		List<Post> posts = (List<Post>) postRepository.findAll();
-		return posts;
+	@Override
+	public List<PostDto> findAll() {
+		List<PostDto> listPostDto = new ArrayList<PostDto>();
+		
+		postRepository.findAll().forEach(post -> {
+			listPostDto.add(new PostDto(post.getId(), post.getTitle(), post.getContent(), post.getCreationDate()));
+		});
+		
+		return listPostDto;
 	}
 
+	@Override
 	public List<PostDto> findPublicPosts() {
 
 		List<PostDto> listPostDto = new ArrayList<PostDto>();
@@ -44,5 +53,11 @@ public class PostServiceImpl {
 		});
 
 		return listPostDto;
+	}
+
+	@Override
+	public PostDto findLastPost() {
+		Post post = postRepository.findTopByReverseOrderByCreationDate();
+		return new PostDto(post.getId(), post.getTitle(), post.getContent(), post.getCreationDate());
 	}
 }

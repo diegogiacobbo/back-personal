@@ -23,12 +23,14 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private CommentRepositoryImpl commentRepository;
 
+	@Override
 	public List<CommentDto> getCommentsForPost(String postId) {
 		List<Comment> comments = commentRepository.findByPost(postId).stream().collect(Collectors.toList());
 		CommentDtoFactory.createList(comments);
 		return CommentDtoFactory.createList(comments);
 	}
 
+	@Override
 	public String addComment(CommentDto commentDto) {
 		Post p = postRepository.findById(commentDto.getPostId().toString()).get();
 		Comment c = commentRepository.save(CommentFactory.create(p, commentDto.getComment(), commentDto.getAuthor(),

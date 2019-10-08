@@ -53,6 +53,6 @@ public class PostServiceTest extends AbstractServiceTest {
 	}
 	
 	public Post createPostTest(LocalDateTime local) {
-		return postRepository.save(PostFactory.create("Test content", "Test title", local));
+		return postRepository.save(PostFactory.create("Test title", "Test content", local));
 	}
 }
