@@ -25,7 +25,7 @@ public class Post {
     @Column(name = "title")
 	private String title;
 	
-	@Column(name = "content_post")
+	@Column(columnDefinition = "TEXT", name = "content_post")
 	private String content;
 
 	@Column(name = "creation")

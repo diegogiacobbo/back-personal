@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(
-				Arrays.asList("https://flamboyant-boyd-b6719d.netlify.com", "http://localhost:3000"));
+				Arrays.asList("https://flamboyant-boyd-b6719d.netlify.com", "http://localhost:3000", "https://diegogiacobbo.dev"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "DELETE"));
 		configuration.setAllowCredentials(true);
 
