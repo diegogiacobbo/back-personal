@@ -19,4 +19,13 @@ public class PostFactory implements Serializable {
                   .instance();
 	  }
 
+	public static Post createPublic(String title, String content, LocalDateTime date) {
+		  return new PostBuilder()
+                .addTitle(title)
+                .addContent(content)
+                .addData(date)
+                .addPublic(Boolean.TRUE)
+                .instance();
+	}
+
 }

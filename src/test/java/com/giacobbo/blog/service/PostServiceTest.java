@@ -1,10 +1,12 @@
 package com.giacobbo.blog.service;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,18 +14,19 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.giacobbo.blog.dto.PostDto;
 import com.giacobbo.blog.factory.PostFactory;
 import com.giacobbo.blog.model.Post;
-import com.giacobbo.blog.repository.PostRepositoryImpl;
+import com.giacobbo.blog.repository.PostRepository;
 
 @RunWith(SpringRunner.class)
 public class PostServiceTest extends AbstractServiceTest {
 
 	@Autowired
-	private PostServiceImpl postService;
+	private PostService postService;
 
 	@Autowired
-	private PostRepositoryImpl postRepository;
+	private PostRepository postRepository;
 	
 	private LocalDateTime local = LocalDateTime.now();
 
@@ -31,12 +34,25 @@ public class PostServiceTest extends AbstractServiceTest {
 	
 	@Before
 	public void contextTests() {
-		this.post = createPostTest(local);
+		this.post = postRepository.save(PostFactory.create("Test title", "Test content", local));
+	}
+	
+
+	@Test
+	public void shouldReturnPublicPost() {
+		assertEquals(new ArrayList<PostDto>(), postService.findPublicPosts());
+		postRepository.save(PostFactory.createPublic("Test title", "Test content", local));
+		assertNotNull(postService.findPublicPosts());
+	}
+	
+	@Test
+	public void shouldReturnLastPost() {
+		assertNotNull(postService.findLastPost());
 	}
 	
 	@Test
 	public void shouldReturnAllPost() {
-		assertNotNull(postRepository.findAll());
+		assertNotNull(postService.findAll());
 	}
 
 	@Test
@@ -52,7 +68,4 @@ public class PostServiceTest extends AbstractServiceTest {
 		assertNotNull(postService.getPost(post.getId().toString()));
 	}
 	
-	public Post createPostTest(LocalDateTime local) {
-		return postRepository.save(PostFactory.create("Test title", "Test content", local));
-	}
 }

@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.giacobbo.blog.dto.CommentDto;
-import com.giacobbo.blog.service.CommentServiceImpl;
+import com.giacobbo.blog.service.CommentService;
 
 @Controller
 @RestController
 @RequestMapping("/comments")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CommentController {
-
+	
 	@Autowired
-	private CommentServiceImpl commentService;
+	private CommentService commentService;
 
 	@RequestMapping(value = "/{postid}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)

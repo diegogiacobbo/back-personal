@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.giacobbo.blog.dto.PostDto;
 import com.giacobbo.blog.factory.PostFactory;
-import com.giacobbo.blog.service.PostServiceImpl;
+import com.giacobbo.blog.service.PostService;
 
 @Controller
 @RestController
@@ -27,7 +27,7 @@ import com.giacobbo.blog.service.PostServiceImpl;
 public class PostController {
 
 	@Autowired
-	private PostServiceImpl postService;
+	private PostService postService;
 
 	@GetMapping("/")
 	@ResponseStatus(HttpStatus.OK)
@@ -53,7 +53,7 @@ public class PostController {
 		return postService.getPost(id);
 	}
 
-	@RequestMapping(value = "/{post}", method = RequestMethod.POST)
+	@RequestMapping(value = "/add/", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public String addPost(@RequestBody String post) {
 		JSONObject jsonObj = new JSONObject(post.toString());

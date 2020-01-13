@@ -66,5 +66,13 @@ public class Post {
 		this.id = id;
 	}
 
+	public Boolean getIsPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(Boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+
 }
 

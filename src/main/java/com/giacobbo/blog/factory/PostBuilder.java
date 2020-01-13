@@ -33,4 +33,9 @@ public class PostBuilder implements Serializable {
 	public Post instance() {
 		return this.post;
 	}
+
+	public PostBuilder addPublic(Boolean ispublic) {
+		this.post.setIsPublic(ispublic);
+		return this;
+	}
 }

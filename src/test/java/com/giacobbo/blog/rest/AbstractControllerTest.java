@@ -9,9 +9,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import com.giacobbo.blog.service.CommentServiceImpl;
-import com.giacobbo.blog.service.PostServiceImpl;
+import com.giacobbo.blog.service.CommentService;
+import com.giacobbo.blog.service.PostService;
+
 @RunWith(SpringRunner.class)
 @ContextConfiguration 
 @WebMvcTest
@@ -21,14 +24,18 @@ public abstract class AbstractControllerTest {
 	protected MockMvc mockMvc;
 
 	@MockBean
-	protected PostServiceImpl postService;
+	protected PostService postService;
 
 	@MockBean
-	protected CommentServiceImpl commentService;
+	protected CommentService commentService;
+	
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
 	@Before
 	public void setUp() {
 		Mockito.reset(postService, commentService);
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
 }
