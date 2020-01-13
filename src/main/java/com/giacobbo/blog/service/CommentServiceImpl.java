@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.giacobbo.blog.builder.CommentDtoFactory;
+import com.giacobbo.blog.builder.CommentFactory;
 import com.giacobbo.blog.dto.CommentDto;
-import com.giacobbo.blog.factory.CommentDtoFactory;
-import com.giacobbo.blog.factory.CommentFactory;
 import com.giacobbo.blog.model.Comment;
 import com.giacobbo.blog.model.Post;
 import com.giacobbo.blog.repository.CommentRepositoryImpl;

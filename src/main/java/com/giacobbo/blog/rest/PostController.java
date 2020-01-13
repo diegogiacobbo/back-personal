@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.giacobbo.blog.dto.PostDto;
-import com.giacobbo.blog.factory.PostFactory;
+import com.giacobbo.blog.builder.PostFactory;
+import com.giacobbo.blog.dto.PostDtoResponse;
 import com.giacobbo.blog.service.PostService;
 
 @Controller
@@ -31,25 +31,25 @@ public class PostController {
 
 	@GetMapping("/")
 	@ResponseStatus(HttpStatus.OK)
-	List<PostDto> all() {
+	List<PostDtoResponse> all() {
 		return postService.findAll();
 	}
 	
 	@GetMapping("/ispublic/")
 	@ResponseStatus(HttpStatus.OK)
-	List<PostDto> ispublic() {
+	List<PostDtoResponse> ispublic() {
 		return postService.findPublicPosts();
 	}
 
 	@GetMapping("/last/")
 	@ResponseStatus(HttpStatus.OK)
-	PostDto last() {
+	PostDtoResponse last() {
 		return postService.findLastPost();
 	}
 	
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public PostDto getPost(@PathVariable String id) {
+	public PostDtoResponse getPost(@PathVariable String id) {
 		return postService.getPost(id);
 	}
 
@@ -57,8 +57,13 @@ public class PostController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public String addPost(@RequestBody String post) {
 		JSONObject jsonObj = new JSONObject(post.toString());
-		return postService.postAdd(PostFactory.create(jsonObj.get("title").toString(),
-				jsonObj.get("content").toString(), LocalDateTime.now()));
+		return postService.postAdd(
+			PostFactory.create(
+				jsonObj.get("title").toString(),
+				jsonObj.get("content").toString(),
+				LocalDateTime.now(),
+				jsonObj.get("image").toString(),
+				jsonObj.get("code").toString()));
 	}
 
 }

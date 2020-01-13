@@ -1,4 +1,4 @@
-package com.giacobbo.blog.factory;
+package com.giacobbo.blog.builder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

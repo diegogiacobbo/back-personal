@@ -7,7 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.giacobbo.blog.dto.PostDto;
+import com.giacobbo.blog.builder.PostDtoResponseFactory;
+import com.giacobbo.blog.dto.PostDtoResponse;
 import com.giacobbo.blog.model.Post;
 import com.giacobbo.blog.repository.PostRepositoryImpl;
 
@@ -18,13 +19,23 @@ public class PostServiceImpl implements PostService {
 	private PostRepositoryImpl postRepository;
 	
 	@Override
-	public PostDto getPost(String id) {
+	public PostDtoResponse getPost(String id) {
 
 		Optional<Post> postOptional = postRepository.findById(id);
-
-		return postRepository.findById(id).map(post -> new PostDto(postOptional.get().getId(),
-				postOptional.get().getTitle(), postOptional.get().getContent(), postOptional.get().getCreationDate()))
-				.orElse(null);
+		
+		if(postOptional.isPresent()){
+		    return PostDtoResponseFactory.create(
+					postOptional.get().getId(),
+					postOptional.get().getTitle(), 
+					postOptional.get().getContent(), 
+					postOptional.get().getCreationDate(),
+					postOptional.get().getImage(),
+					postOptional.get().getContent_code(),
+					postOptional.get().getIsPublic());
+		}
+		    
+		return null;
+		
 	}
 
 	@Override
@@ -33,31 +44,57 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> findAll() {
-		List<PostDto> listPostDto = new ArrayList<PostDto>();
-		
-		postRepository.findAll().forEach(post -> {
-			listPostDto.add(new PostDto(post.getId(), post.getTitle(), post.getContent(), post.getCreationDate()));
-		});
+	public List<PostDtoResponse> findAll() {
+		List<PostDtoResponse> listPostDto = new ArrayList<PostDtoResponse>();
+		Iterable<Post> optionalPosts = postRepository.findAll();
+		optionalPosts.forEach(post -> listPostDto.add(
+				PostDtoResponseFactory.create(
+						post.getId(),
+						post.getTitle(), 
+						post.getContent(), 
+						post.getCreationDate(),
+						post.getImage(),
+						post.getContent_code(),
+						post.getIsPublic())));
 		
 		return listPostDto;
 	}
 
 	@Override
-	public List<PostDto> findPublicPosts() {
+	public List<PostDtoResponse> findPublicPosts() {
 
-		List<PostDto> listPostDto = new ArrayList<PostDto>();
+		List<PostDtoResponse> listPostDtoResponse = new ArrayList<PostDtoResponse>();
 
 		postRepository.findPublicPosts().forEach(post -> {
-			listPostDto.add(new PostDto(post.getId(), post.getTitle(), post.getContent(), post.getCreationDate()));
+			listPostDtoResponse.add(
+				PostDtoResponseFactory.create(
+					post.getId(),
+					post.getTitle(), 
+					post.getContent(), 
+					post.getCreationDate(),
+					post.getImage(),
+					post.getContent_code(),
+					post.getIsPublic()
+				)
+			);
 		});
 
-		return listPostDto;
+		return listPostDtoResponse;
 	}
 
 	@Override
-	public PostDto findLastPost() {
+	public PostDtoResponse findLastPost() {
 		Post post = postRepository.findTopByReverseOrderByCreationDate();
-		return new PostDto(post.getId(), post.getTitle(), post.getContent(), post.getCreationDate());
+		
+		PostDtoResponse postDtoResponse = PostDtoResponseFactory.create(
+						post.getId(),
+						post.getTitle(), 
+						post.getContent(), 
+						post.getCreationDate(),
+						post.getImage(),
+						post.getContent_code(),
+						post.getIsPublic());
+		
+		return postDtoResponse;
 	}
 }

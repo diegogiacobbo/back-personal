@@ -2,19 +2,20 @@ package com.giacobbo.blog.service;
 
 import java.util.List;
 
-import com.giacobbo.blog.dto.PostDto;
+import com.giacobbo.blog.dto.PostDtoResponse;
 import com.giacobbo.blog.model.Post;
 
 public interface PostService {
 
-	public PostDto getPost(String id);
+	public 
+	PostDtoResponse getPost(String id);
 
 	public String postAdd(Post post);
 
-	public List<PostDto> findAll();
+	public List<PostDtoResponse> findAll();
 	
-	public List<PostDto> findPublicPosts();
+	public List<PostDtoResponse> findPublicPosts();
 	
-	public PostDto findLastPost();
+	public PostDtoResponse findLastPost();
 
 }

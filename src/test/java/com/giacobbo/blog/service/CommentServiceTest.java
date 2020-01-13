@@ -15,10 +15,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.giacobbo.blog.builder.CommentDtoBuilder;
+import com.giacobbo.blog.builder.CommentDtoFactory;
+import com.giacobbo.blog.builder.PostFactory;
 import com.giacobbo.blog.dto.CommentDto;
-import com.giacobbo.blog.factory.CommentDtoBuilder;
-import com.giacobbo.blog.factory.CommentDtoFactory;
-import com.giacobbo.blog.factory.PostFactory;
 import com.giacobbo.blog.model.Post;
 import com.giacobbo.blog.repository.PostRepository;
 
@@ -36,7 +36,7 @@ public class CommentServiceTest extends AbstractServiceTest {
 	String commentId = new String();
 
 	private Post createTestPost() {
-		return postRepository.save(PostFactory.create("Test content", "Test title", LocalDateTime.now()));
+		return postRepository.save(PostFactory.create("Test content", "Test title", LocalDateTime.now(), "hello word image", "hello word code"));
 	}
 
 	@Before

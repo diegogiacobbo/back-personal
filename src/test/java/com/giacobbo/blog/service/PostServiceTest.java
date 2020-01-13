@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +15,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.giacobbo.blog.dto.PostDto;
-import com.giacobbo.blog.factory.PostFactory;
+import com.giacobbo.blog.builder.PostFactory;
+import com.giacobbo.blog.dto.PostDtoResponse;
 import com.giacobbo.blog.model.Post;
 import com.giacobbo.blog.repository.PostRepository;
 
@@ -34,13 +35,13 @@ public class PostServiceTest extends AbstractServiceTest {
 	
 	@Before
 	public void contextTests() {
-		this.post = postRepository.save(PostFactory.create("Test title", "Test content", local));
+		this.post = postRepository.save(PostFactory.create("Test title", "Test content", local, "hello word image", "hello word code"));
 	}
 	
 
 	@Test
 	public void shouldReturnPublicPost() {
-		assertEquals(new ArrayList<PostDto>(), postService.findPublicPosts());
+		assertEquals(new ArrayList<PostDtoResponse>(), postService.findPublicPosts());
 		postRepository.save(PostFactory.createPublic("Test title", "Test content", local));
 		assertNotNull(postService.findPublicPosts());
 	}
@@ -61,6 +62,8 @@ public class PostServiceTest extends AbstractServiceTest {
 		assertThat(post.getContent(), equalTo("Test content"));
 		assertThat(post.getTitle(), equalTo("Test title"));
 		assertThat(post.getCreationDate(), equalTo(local));
+		assertThat(post.getImage(), equalTo(Base64.getEncoder().encode("hello word image".getBytes())));
+		assertThat(post.getContent_code(), equalTo("hello word code"));
 	}
 
 	@Test

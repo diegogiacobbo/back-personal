@@ -19,8 +19,9 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.giacobbo.blog.dto.PostDto;
-import com.giacobbo.blog.factory.PostFactory;
+import com.giacobbo.blog.builder.PostDtoResponseFactory;
+import com.giacobbo.blog.builder.PostFactory;
+import com.giacobbo.blog.dto.PostDtoResponse;
 import com.giacobbo.blog.model.Post;
 
 @ContextConfiguration(classes = PostController.class)
@@ -34,16 +35,26 @@ public class PostControllerTest extends AbstractControllerTest {
 
 		// given
 		LocalDateTime creationDate = LocalDateTime.of(2018, 5, 20, 20, 51, 16);
-		PostDto post = new PostDto(1L, "Title", "content", creationDate);
+		PostDtoResponse postResponse = PostDtoResponseFactory.create(
+				1L, 
+				"Title", 
+				"content", 
+				creationDate, 
+				"hello word".getBytes(), 
+				"{process.env.REACT_APP_A_PROPOS_CONTENU}",
+				Boolean.TRUE);
 
 		// when
-		when(postService.getPost("1")).thenReturn(post);
+		when(postService.getPost("1")).thenReturn(postResponse);
 
 		// then
 		mockMvc.perform(get("/posts/1").accept(APPLICATION_JSON_UTF8)).andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON_UTF8)).andExpect(jsonPath("$.title", is("Title")))
+				.andExpect(jsonPath("$.title", is("Title")))
 				.andExpect(jsonPath("$.content", is("content")))
-				.andExpect(jsonPath("$.creationDate", is(creationDate.toString())));
+				.andExpect(jsonPath("$.creationDate", is(creationDate.toString())))
+				.andExpect(jsonPath("$.image", is("aGVsbG8gd29yZA==")))
+				.andExpect(jsonPath("$.code", is("{process.env.REACT_APP_A_PROPOS_CONTENU}")));
 
 	}
 
@@ -55,14 +66,19 @@ public class PostControllerTest extends AbstractControllerTest {
 		String json = 
 				"{\n" + 
 				"  \"content\": \"Test content\", \n" +
-				"  \"title\": \"title\" \n" + 
-				"	\n" + 
+				"  \"title\": \"title\", \n" + 
+				"  \"image\": \"hello word image\", \n" + 
+				"  \"code\": \"hello word code\" \n" +  
 				"}";
 
 		JSONObject jsonObj = new JSONObject(json.toString());
 
-		Post post = PostFactory.create(jsonObj.get("title").toString(), jsonObj.get("content").toString(),
-				LocalDateTime.now());
+		Post post = PostFactory.create(
+				jsonObj.get("title").toString(), 
+				jsonObj.get("content").toString(),
+				LocalDateTime.now(),
+				jsonObj.get("image").toString(),
+				jsonObj.get("code").toString());
 		
 		// when
 		when(postService.postAdd(post)).thenReturn("1");

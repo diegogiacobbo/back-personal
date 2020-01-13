@@ -1,9 +1,9 @@
-package com.giacobbo.blog.factory;
+package com.giacobbo.blog.builder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import com.giacobbo.blog.model.*;
+import com.giacobbo.blog.model.Post;
 
 public class PostBuilder implements Serializable {
 
@@ -30,12 +30,27 @@ public class PostBuilder implements Serializable {
 		return this;
 	}
 
+	public PostBuilder addPublic(Boolean ispublic) {
+		this.post.setIsPublic(ispublic);
+		return this;
+	}
+
+	public PostBuilder addCode(String code) {
+		this.post.setContent_code(code);
+		return this;
+	}
+
+	public PostBuilder addImage(byte[] image) {
+		this.post.setImage(image);
+		return this;
+	}
+
 	public Post instance() {
 		return this.post;
 	}
 
-	public PostBuilder addPublic(Boolean ispublic) {
-		this.post.setIsPublic(ispublic);
+	public PostBuilder addId(Long id) {
+		this.post.setId(id);
 		return this;
 	}
 }

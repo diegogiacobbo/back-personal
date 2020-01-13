@@ -8,15 +8,17 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "post")
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
-
+	
 	@Id
     @Column(name = "id")
 	@GeneratedValue (strategy = GenerationType.AUTO)
@@ -33,6 +35,14 @@ public class Post {
 	
 	@Column(name = "is_public")
 	private Boolean isPublic;
+	
+	@Column(columnDefinition = "TEXT", name = "content_code")
+	private String content_code;
+	
+	@Lob
+	@Column(name = "image")
+	@Type(type="org.hibernate.type.BinaryType")
+	private byte[] image;
 	
 	public String getTitle() {
 		return title;
@@ -72,6 +82,22 @@ public class Post {
 
 	public void setIsPublic(Boolean isPublic) {
 		this.isPublic = isPublic;
+	}
+
+	public String getContent_code() {
+		return content_code;
+	}
+
+	public void setContent_code(String content_code) {
+		this.content_code = content_code;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 }
